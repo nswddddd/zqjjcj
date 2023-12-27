@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>恭喜获奖者</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #C70039; /* 国企红色 */
+            text-align: center;
+            padding: 50px;
+            color: #333;
+        }
+
+        #container {
+            background-color: white;
+            width: 40%; /* 进一步缩小宽度为40% */
+            margin: auto;
+            padding: 10px; /* 减少内边距 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        #prizes {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        #prizes p {
+            color: #003366; /* 深蓝色 */
+        }
+
+        h1 {
+            color: #fff; /* 白色 */
+        }
+
+        .winner {
+            font-size: 18px; /* 稍微减小字体大小 */
+            color: gold; /* 金色 */
+            margin-top: 10px;
+        }
+
+        .congratulations-title {
+            color: #003366; /* 蓝色 */
+            margin-bottom: 20px;
+            font-size: 22px; /* 调整标题字体大小 */
+        }
+    </style>
+</head>
+<body>
+    <div id="prizes">
+        <p id="firstPrize">一等奖: 1 BTC</p >
+        <p id="secondPrize">二等奖: 1 ETH</p >
+        <p id="thirdPrize">三等奖: 1 XRP</p >
+    </div>
+    <div id="container">
+        <h1>恭喜获奖者</h1>
+        <div class="congratulations-title">恭喜以下获奖者!</div>
+        <div id="winnersList"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 应用奖品设置
+            document.getElementById('firstPrize').textContent = '一等奖: ' + (localStorage.getItem('firstPrize') || '1 BTC');
+            document.getElementById('secondPrize').textContent = '二等奖: ' + (localStorage.getItem('secondPrize') || '1 ETH');
+            document.getElementById('thirdPrize').textContent = '三等奖: ' + (localStorage.getItem('thirdPrize') || '1 XRP');
+
+            // 获取并显示获奖者
+            const winners = localStorage.getItem('winners') ? localStorage.getItem('winners').split(',') : ["员工1", "员工2", "员工3"];
+            const winnersList = document.getElementById('winnersList');
+            winners.forEach((winner, index) => {
+                const prize = index === 0 ? localStorage.getItem('firstPrize') || '1 BTC' :
+                              index === 1 ? localStorage.getItem('secondPrize') || '1 ETH' :
+                              localStorage.getItem('thirdPrize') || '1 XRP';
+                const winnerElement = document.createElement('p');
+                winnerElement.className = 'winner';
+                winnerElement.textContent = `${winner} - ${prize}`;
+                winnersList.appendChild(winnerElement);
+            });
+        });
+    </script>
+</body>
+</html>

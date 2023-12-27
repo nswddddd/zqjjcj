@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>政企每日签到抽奖活动</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #C70039; /* 修改为国企红色 */
+            text-align: center;
+            padding: 50px;
+            color: #333;
+        }
+
+        #container {
+            background-color: white;
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        #prizes {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        #prizes p {
+            color: #003366; /* 深蓝色 */
+        }
+
+        #progressBarContainer {
+            width: 100%;
+            background-color: #ddd;
+            padding: 3px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 20px;
+            background-color: #003366; /* 深蓝色 */
+            transition: width 2s;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #003366; /* 深蓝色 */
+            color: white;
+            padding: 10px 20px;
+            margin: 20px 0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #002244; /* 更深的蓝色 */
+        }
+
+        #lotteryStatus, .result, #results {
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #003366; /* 深蓝色 */
+        }
+
+        .result {
+            font-size: 20px;
+            color: gold; /* 字体颜色改为金色 */
+            margin-top: 10px;
+        }
+
+        #settingsButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50; /* 绿色 */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        #settingsButton:hover {
+            background-color: #367C39; /* 更深的绿色 */
+        }
+    </style>
+</head>
+<body>
+    <div id="prizes">
+        <p id="firstPrize">一等奖: 1 BTC</p >
+        <p id="secondPrize">二等奖: 1 ETH</p >
+        <p id="thirdPrize">三等奖: 1 XRP</p >
+    </div>
+    <div id="container">
+        <h1>政企每日签到抽奖活动</h1>
+        <button id="startButton">开始抽奖</button>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+        <p id="lotteryStatus" style="display:none;">随机抽奖中...</p >
+        <div id="results"></div>
+        <button id="continueButton" style="display:none;">继续</button>
+    </div>
+
+    <button id="settingsButton" onclick="window.location.href='settings.html';">设置</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const startButton = document.getElementById('startButton');
+            const continueButton = document.getElementById('continueButton');
+            const progressBar = document.getElementById('progressBar');
+            const lotteryStatus = document.getElementById('lotteryStatus');
+            const resultsContainer = document.getElementById('results');
+
+            let employees = localStorage.getItem('winners') ? localStorage.getItem('winners').split(',') : ["员工1", "员工2", "员工3"];
+            let prizes = ["三等奖", "二等奖", "一等奖"];
+            let currentDraw = 0;
+
+            // 应用从localStorage获取的奖品设置
+            document.getElementById('firstPrize').textContent = '一等奖: ' + (localStorage.getItem('firstPrize') || '1 BTC');
+            document.getElementById('secondPrize').textContent = '二等奖: ' + (localStorage.getItem('secondPrize') || '1 ETH');
+            document.getElementById('thirdPrize').textContent = '三等奖: ' + (localStorage.getItem('thirdPrize') || '1 XRP');
+
+            function startLottery() {
+                progressBar.style.width = '0%';
+                startButton.disabled = true;
+                lotteryStatus.style.display = 'block';
+
+                setTimeout(function() {
+                    let progress = 0;
+                    const interval = setInterval(function() {
+                        progress += 10;
+                        progressBar.style.width = progress + '%';
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            setTimeout(() => {
+                                lotteryStatus.style.display = 'none';
+                                const resultElement = document.createElement("p");
+                                resultElement.className = "result";
+                                resultElement.textContent = employees[currentDraw] + " 获得 " + prizes[currentDraw];
+                                resultsContainer.appendChild(resultElement);
+
+                                currentDraw++;
+                                if (currentDraw < employees.length) {
+                                    continueButton.style.display = 'block';
+                                } else {
+                                    continueButton.style.display = 'block';
+                                    continueButton.textContent = "查看获奖者";
+                                }
+                            }, 3000);
+                        }
+                    }, 200);
+                }, 200);
+            }
+
+            startButton.addEventListener('click', startLottery);
+
+            continueButton.addEventListener('click', function() {
+                if (currentDraw < employees.length) {
+                    progressBar.style.width = '0%';
+                    continueButton.style.display = 'none';
+                    startButton.disabled = false;
+                } else {
+                    window.location.href = "congratulations.html";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

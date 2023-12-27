@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置 - 政企每日签到抽奖活动</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #367C39;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>设置</h1>
+
+        <div>
+            <h2>奖励设置</h2>
+            <input type="text" id="firstPrize" placeholder="一等奖" value="1 BTC">
+            <input type="text" id="secondPrize" placeholder="二等奖" value="1 ETH">
+            <input type="text" id="thirdPrize" placeholder="三等奖" value="1 XRP">
+        </div>
+
+        <div>
+            <h2>获奖者设置</h2>
+            <input type="text" id="winners" placeholder="获奖者名单，用逗号分隔">
+        </div>
+
+        <div>
+            <h2>模式设置</h2>
+            <label><input type="radio" name="mode" value="fixed" checked> 固定模式</label>
+            <label><input type="radio" name="mode" value="random"> 随机模式</label>
+        </div>
+
+        <button onclick="applySettings()">确认</button>
+    </div>
+
+    <script>
+        function applySettings() {
+            const firstPrize = document.getElementById('firstPrize').value;
+            const secondPrize = document.getElementById('secondPrize').value;
+            const thirdPrize = document.getElementById('thirdPrize').value;
+            const winners = document.getElementById('winners').value;
+
+            localStorage.setItem('firstPrize', firstPrize);
+            localStorage.setItem('secondPrize', secondPrize);
+            localStorage.setItem('thirdPrize', thirdPrize);
+            localStorage.setItem('winners', winners);
+
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
